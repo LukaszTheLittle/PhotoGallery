@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.photogallery.api.FlickrApi
+import retrofit2.Call
 import retrofit2.Retrofit
 
 class PhotoGalleryFragment: Fragment() {
@@ -23,6 +24,8 @@ class PhotoGalleryFragment: Fragment() {
             .build()
 
         val flickrApi: FlickrApi = retrofit.create(FlickrApi::class.java)
+
+        val flickrHomePageRequest: Call<String> = flickrApi.fetchContents()
     }
 
     override fun onCreateView(
