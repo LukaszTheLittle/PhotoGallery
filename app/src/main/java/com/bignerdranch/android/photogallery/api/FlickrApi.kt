@@ -12,7 +12,7 @@ interface FlickrApi {
                 "&nojsoncallback=1" +
                 "&extras=url_s"
     )
-    fun fetchContents(): Call<String>
+    fun fetchPhotos(): Call<String>
 
     companion object {
         private const val API_KEY = "93a8e77d2715f695e9e6f303bb8c739a"
