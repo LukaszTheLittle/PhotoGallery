@@ -36,6 +36,15 @@ class PhotoGalleryFragment: Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        photoGalleryViewModel.galleryItemLiveData.observe(
+            viewLifecycleOwner,
+            Observer { galleryItems ->
+                Log.d(TAG, "Have gallery items from ViewModel $galleryItems")
+            })
+    }
+
     companion object {
         private const val TAG = "PhotoGalleryFragment"
         fun newInstance() = PhotoGalleryFragment()
