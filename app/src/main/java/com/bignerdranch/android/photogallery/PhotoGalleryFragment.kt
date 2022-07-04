@@ -47,20 +47,24 @@ class PhotoGalleryFragment: Fragment() {
     }
 
     private class PhotoHolder(private val itemImageView: ImageView)
-        :RecyclerView.ViewHolder(itemImageView) {
+        : RecyclerView.ViewHolder(itemImageView) {
 
         val bindDrawable: (Drawable) -> Unit = itemImageView::setImageDrawable
     }
 
-    private class PhotoAdapter(private val galleryItems: List<GalleryItem>)
-        :RecyclerView.Adapter<PhotoHolder>() {
+    private inner class PhotoAdapter(private val galleryItems: List<GalleryItem>)
+        : RecyclerView.Adapter<PhotoHolder>() {
 
             override fun onCreateViewHolder(
                 parent: ViewGroup,
                 viewType: Int
             ): PhotoHolder {
-                val textView = TextView(parent.context)
-                return PhotoHolder(textView)
+                val view = layoutInflater.inflate(
+                    R.layout.list_item_gallery,
+                    parent,
+                    false
+                ) as ImageView
+                return PhotoHolder(view)
             }
 
         override fun getItemCount(): Int = galleryItems.size
