@@ -5,7 +5,7 @@ import android.util.Log
 
 class ThumbnailDownloader<in T>: HandlerThread(TAG) {
 
-    private val hasQuit = false
+    private var hasQuit = false
 
     override fun quit(): Boolean {
         hasQuit = true
