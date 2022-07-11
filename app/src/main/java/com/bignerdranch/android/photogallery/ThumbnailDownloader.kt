@@ -1,6 +1,7 @@
 package com.bignerdranch.android.photogallery
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -10,7 +11,10 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.ConcurrentHashMap
 
-class ThumbnailDownloader<in T>: HandlerThread(TAG), DefaultLifecycleObserver {
+class ThumbnailDownloader<in T>(
+    private val responseHandler: Handler,
+    private val onThumbnailDownloaded: (T, Bitmap) -> Unit
+): HandlerThread(TAG), DefaultLifecycleObserver {
 
     private var hasQuit = false
     private lateinit var requestHandler: Handler
