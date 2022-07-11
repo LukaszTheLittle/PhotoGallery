@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,7 @@ class PhotoGalleryFragment: Fragment() {
         photoGalleryViewModel =
             ViewModelProvider(this).get(PhotoGalleryViewModel::class.java)
 
-        val responseHandler = Handler(Looper.getMainLooper())
+        val responseHandler = Handler()
         thumbnailDownloader =
             ThumbnailDownloader(responseHandler) { photoHolder, bitmap ->
                 val drawable = BitmapDrawable(resources, bitmap)
