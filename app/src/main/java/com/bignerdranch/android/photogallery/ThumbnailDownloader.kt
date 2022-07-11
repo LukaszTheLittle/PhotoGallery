@@ -60,6 +60,14 @@ class ThumbnailDownloader<in T>(
     private fun handleRequest(target: T) {
         val url = requestMap[target] ?: return
         val bitmap = flickrFetchr.fetchPhoto(url) ?: return
+
+        responseHandler.post(Runnable {
+            if (requestMap[target] != url || hasQuit) {
+                return@Runnable
+            }
+            requestMap.remove(target)
+            onThumbnailDownloaded(target, bitmap)
+        })
     }
 
     companion object {
