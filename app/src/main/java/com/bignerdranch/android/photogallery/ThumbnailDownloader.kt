@@ -14,7 +14,20 @@ import java.util.concurrent.ConcurrentHashMap
 class ThumbnailDownloader<in T>(
     private val responseHandler: Handler,
     private val onThumbnailDownloaded: (T, Bitmap) -> Unit
-): HandlerThread(TAG), DefaultLifecycleObserver {
+): HandlerThread(TAG) {
+
+    val fragmentLifecycleObserver: DefaultLifecycleObserver =
+        object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                Log.i (TAG, "Starting background thread")
+                start()
+                looper
+            }
+            override fun onDestroy (owner: LifecycleOwner) {
+                Log.i (TAG, "Destroying background thread")
+                quit()
+            }
+        }
 
     private var hasQuit = false
     private lateinit var requestHandler: Handler
@@ -37,17 +50,6 @@ class ThumbnailDownloader<in T>(
     override fun quit(): Boolean {
         hasQuit = true
         return super.quit()
-    }
-
-    override fun onCreate(owner: LifecycleOwner) {
-        Log.i(TAG, "Starting background thread")
-        start()
-        looper
-    }
-
-    override fun onDestroy(owner: LifecycleOwner) {
-        Log.i(TAG, "Destroying background thread")
-        quit()
     }
 
     fun queueThumbnail(target: T, url: String) {
