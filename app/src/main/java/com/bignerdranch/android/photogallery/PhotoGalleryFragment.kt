@@ -22,6 +22,8 @@ class PhotoGalleryFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        retailInstance = true
+
         photoGalleryViewModel = ViewModelProvider(this).get(PhotoGalleryViewModel::class.java)
     }
 
