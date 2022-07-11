@@ -1,13 +1,18 @@
 package com.bignerdranch.android.photogallery
 
+import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 class ThumbnailDownloader<in T>: HandlerThread(TAG), DefaultLifecycleObserver {
 
     private var hasQuit = false
+    private lateinit var requestHandler: Handler
+    private val requestMap = ConcurrentHashMap<T, String>()
 
     override fun quit(): Boolean {
         hasQuit = true
@@ -31,5 +36,7 @@ class ThumbnailDownloader<in T>: HandlerThread(TAG), DefaultLifecycleObserver {
 
     companion object {
         private const val TAG = "ThumbnailDownloader"
+        private const val MESSAGE_DOWNLOAD = 0
+        private val flickrFetchr = FlickrFetchr()
     }
 }
