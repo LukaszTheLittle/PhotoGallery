@@ -16,10 +16,13 @@ class ThumbnailDownloader<in T>: HandlerThread(TAG), DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         Log.i(TAG, "Starting background thread")
+        start()
+        looper
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
         Log.i(TAG, "Destroying background thread")
+        quit()
     }
 
     fun queueThumbnail(target: T, url: String) {
