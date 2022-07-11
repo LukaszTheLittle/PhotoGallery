@@ -66,7 +66,9 @@ class PhotoGalleryFragment: Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        lifecycle.removeObserver(thumbnailDownloader)
+        viewLifecycleOwner.lifecycle.removeObserver(
+            thumbnailDownloader.viewLifecycleObserver
+        )
     }
 
     private class PhotoHolder(private val itemImageView: ImageView)
