@@ -3,22 +3,23 @@ package com.bignerdranch.android.photogallery.api
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface FlickrApi {
 
-    @GET(HTTPS_ADDRESS)
+    @GET(HTTPS_ADDRESS_INTERESTINGNESS)
     fun fetchPhotos(): Call<FlickrResponse>
 
     @GET
     fun fetchUrlBytes(@Url url: String): Call<ResponseBody>
 
+    @GET(HTTPS_ADRESS_SEARCH_METHOD)
+    fun searchPhotos(@Query("text") query: String): Call<FlickrResponse>
+
     companion object {
-        private const val API_KEY = "93a8e77d2715f695e9e6f303bb8c739a"
-        private const val HTTPS_ADDRESS = "services/rest/?method=flickr.interestingness.getList" +
-                "&api_key=${API_KEY}" +
-                "&format=json" +
-                "&nojsoncallback=1" +
-                "&extras=url_s"
+        private const val HTTPS_ADDRESS_INTERESTINGNESS = "services/rest/?method" +
+        "=flickr.interestingness.getList"
+        private const val HTTPS_ADRESS_SEARCH_METHOD = "services/rest/?method=flickr.photos.search"
     }
 }
