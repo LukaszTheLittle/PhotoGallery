@@ -11,6 +11,9 @@ class PhotoGalleryViewModel(private val app: Application): AndroidViewModel(app)
 
     val galleryItemLiveData: LiveData<List<GalleryItem>>
 
+    val searchTerm: String
+    get() = mutableSearchTerm.value ?: ""
+
     init {
         mutableSearchTerm.value = QueryPreferences.getStoredQuery(app)
 
