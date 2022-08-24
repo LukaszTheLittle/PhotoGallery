@@ -14,13 +14,13 @@ interface FlickrApi {
     @GET
     fun fetchUrlBytes(@Url url: String): Call<ResponseBody>
 
-    @GET(HTTPS_ADRESS_SEARCH_METHOD)
+    @GET(HTTPS_ADDRESS_SEARCH_METHOD)
     fun searchPhotos(@Query(TEXT) query: String): Call<FlickrResponse>
 
     companion object {
         private const val HTTPS_ADDRESS_INTERESTINGNESS = "services/rest/?method" +
         "=flickr.interestingness.getList"
-        private const val HTTPS_ADRESS_SEARCH_METHOD = "services/rest/?method=flickr.photos.search"
+        private const val HTTPS_ADDRESS_SEARCH_METHOD = "services/rest/?method=flickr.photos.search"
         private const val TEXT = "text"
     }
 }
