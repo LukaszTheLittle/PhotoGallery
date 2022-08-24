@@ -28,7 +28,7 @@ class FlickrFetchr {
             .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://api.flickr.com")
+            .baseUrl("https://api.flickr.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
