@@ -23,10 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 
 class PhotoGalleryFragment: Fragment() {
 
@@ -51,17 +47,6 @@ class PhotoGalleryFragment: Fragment() {
             }
         ProcessLifecycleOwner.get().lifecycle
             .addObserver(thumbnailDownloader.fragmentLifecycleObserver)
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .build()
-        val workRequest = OneTimeWorkRequest
-            .Builder(PollWorker::class.java)
-            .setConstraints(constraints)
-            .build()
-        WorkManager.getInstance()
-            .enqueue(workRequest)
-
     }
 
     override fun onCreateView(
@@ -130,6 +115,15 @@ class PhotoGalleryFragment: Fragment() {
                 searchView.setQuery(photoGalleryViewModel.searchTerm, false)
             }
         }
+
+        val toggleItem = menu.findItem(R.id.menu_item_toggle_polling)
+        val isPolling = QueryPreferences.isPolling(requireContext())
+        val toggleItemTitle = if (isPolling) {
+            R.string.stop_polling
+        } else {
+            R.string.start_polling
+        }
+        toggleItem.setTitle(toggleItemTitle)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
