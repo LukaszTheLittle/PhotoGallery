@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ProcessLifecycleOwner
 
 class PhotoGalleryFragment: Fragment() {
 
@@ -37,13 +39,13 @@ class PhotoGalleryFragment: Fragment() {
         photoGalleryViewModel =
             ViewModelProvider(this).get(PhotoGalleryViewModel::class.java)
 
-        val responseHandler = Handler()
+        val responseHandler = Handler(Looper.getMainLooper())
         thumbnailDownloader =
             ThumbnailDownloader(responseHandler) { photoHolder, bitmap ->
                 val drawable = BitmapDrawable(resources, bitmap)
                 photoHolder.bindDrawable(drawable)
             }
-        lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
     }
 
     override fun onCreateView(
