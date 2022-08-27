@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 
 class PhotoGalleryFragment: Fragment() {
 
@@ -45,7 +47,15 @@ class PhotoGalleryFragment: Fragment() {
                 val drawable = BitmapDrawable(resources, bitmap)
                 photoHolder.bindDrawable(drawable)
             }
-        ProcessLifecycleOwner.get().lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
+        ProcessLifecycleOwner.get().lifecycle
+            .addObserver(thumbnailDownloader.fragmentLifecycleObserver)
+
+        val workRequest = OneTimeWorkRequest
+            .Builder(PollWorker::class.java)
+            .build()
+        WorkManager.getInstance()
+            .enqueue(workRequest)
+
     }
 
     override fun onCreateView(
