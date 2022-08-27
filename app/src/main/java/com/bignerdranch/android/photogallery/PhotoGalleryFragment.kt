@@ -23,6 +23,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
 
 class PhotoGalleryFragment: Fragment() {
 
@@ -132,6 +138,26 @@ class PhotoGalleryFragment: Fragment() {
                 photoGalleryViewModel.fetchPhotos("")
                 true
             }
+            R.id.menu_item_toggle_polling -> {
+                val isPolling = QueryPreferences.isPolling(requireContext())
+                if (isPolling) {
+                    WorkManager.getInstance().cancelUniqueWork(POLL_WORK)
+                    QueryPreferences.setPolling(requireContext(), false)
+                } else {
+                    val constraints = Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.UNMETERED)
+                        .build()
+                    val periodicRequest = PeriodicWorkRequest
+                        .Builder(PollWorker::class.java, 15, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .build()
+                    WorkManager.getInstance().enqueueUniquePeriodicWork(
+                        POLL_WORK, ExistingPeriodicWorkPolicy.KEEP, periodicRequest)
+                    QueryPreferences.setPolling(requireContext(), true)
+                }
+                activity?.invalidateOptionsMenu()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -171,6 +197,7 @@ class PhotoGalleryFragment: Fragment() {
     }
 
     companion object {
+        private const val POLL_WORK = "POLL_WORK"
         fun newInstance() = PhotoGalleryFragment()
     }
 }
