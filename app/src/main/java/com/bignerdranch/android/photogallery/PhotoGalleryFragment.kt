@@ -57,6 +57,7 @@ class PhotoGalleryFragment: Fragment() {
             .build()
         val workRequest = OneTimeWorkRequest
             .Builder(PollWorker::class.java)
+            .setConstraints(constraints)
             .build()
         WorkManager.getInstance()
             .enqueue(workRequest)
