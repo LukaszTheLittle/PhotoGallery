@@ -34,7 +34,7 @@ class PhotoPageFragment: VisibleFragment() {
 
         private const val ARG_URI = "photo_page_url"
 
-        fun newInstance(uri: Uri): PhotoPageFragment {
+        fun newInstance(uri: Uri?): PhotoPageFragment {
             return PhotoPageFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_URI, uri)
