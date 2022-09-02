@@ -203,6 +203,7 @@ class PhotoGalleryFragment: VisibleFragment() {
 
         override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
             val galleryItem = galleryItems[position]
+            holder.bindGalleryItem(galleryItem)
             val placeholder: Drawable = ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.bill_up_close
